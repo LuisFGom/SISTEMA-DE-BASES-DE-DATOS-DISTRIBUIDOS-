@@ -1,0 +1,134 @@
+Sistemas de Base de Datos Distribuidas
+Fecha: 05-09-2025
+
+______________________________________________________________
+
+>Niveles de Transparencia
+
+>> TRANSPARENCIA DE TRANSACCIONES
+
+La transparencia de transporte permite que una transacción actualice datos en varios sitios de la red. La transparencia de transacción garantiza que la transacción se realizara o complementada en su totalidad o abortada, con lo cual se mantiene la integridad de la base de datos.
+
+---------------------------------------------------------------
+
+>>> Formato de una transacción
+
+BEGIN WORK 		-> Inicio de la transparencia
+
+Select blablablá 	-> Solicitudes
+Update blablablá 	-> Solicitudes
+Delete blablablá 	-> Solicitudes
+
+COMMIT WORK		-> Fin de la transaccion
+
+---------------------------------------------------------------
+
+- Transaccion No distribuida(no hay datos en la red)
+- Transaccion distribuida(actualiza los datos de varios sitios remotos en la red)
+- Transaccion Remota: Esta compuesta de varias solicitudes remotas en la red
+
+----------------------------------------------------------------
+
+>>> 	SOLICITUD REMOTA
+
+- Permite acceder a los datos que serán procesados por un solo procesador de base de datos remoto.
+
+-La sentencia o solicitud SQL puede hacer referencia en un solo sitio remoto.
+----------------------------------------------------------------
+
+>>> TRANSACCION REMOTA
+
+La transacción actualiza las tablas CLIENTE y FACTURA. Ambas tablas están en el sitio B. La transacción puede haber referencia solamente a un procesador de datos remoto.
+
+Las tablas están en el sitio B pero en el sitio A se muestran las tablas y la sentencia SQL. 
+
+-Cada sentencia o solicitud SQL puede hacer referencia solamente a un procesador de datos remoto(el mismo) a la vez, y toda la transacción puede hacer referencia y ser ejecutada solo un procesador de datos remoto.
+
+NOTA: se podría hacer con 1 solo de manera remota
+
+----------------------------------------------------------------
+
+>> Transacción Distribuida
+
+-Permite que una transacción haga referencia a varios sitios de procesamientos de datos distribuidas (locales y remoto)
+
+- Cada solicitud puede hacer referencia a solo un sitio de procesamiento de datos (o a un lugar diferente ).
+
+_________________________________________________________________
+
+Una solicitud distribuida permite hacer referencia a datos de varios sitios remotos de procesamiento de datos remotos.
+
+Proporciona capacidades de procesamiento de BD totalmente distribuida:
+- Dividir una tabla en varios fragmentos
+- Hacer referencias a uno o mas de esos fragmentos solamente con solicitud.
+
+________________________________________________________________
+
+ La transparencia de replicación de datos se refiere a que , si existen copias de objetos de la base de datos, su existencia debe ser controlada por el sistema no por el usuario.
+
+_______________________________________________________________
+
+>>	TRANSFARENCIA DE FALLA
+
+- La transferencia de falla permite que el sistema continué operando en el caso de una falla de nodo. Las funciones que se perdieron a causa de la falla serán recobradas por otro nodo de la red.
+
+_______________________________________________________________
+
+>>	TRANSFERENCIA DE DESEMPEÑO 
+
+- Permite que cuando los objetos de la ase de datos están fragmentados, el sistema maneja la conversión de consultas de usuario definidas sobre relación globales a consultas definidas sobre fragmentos. Asi también, mezcla las respuestas a consultas fragmentadas para obtener una sola respuesta a una consulta global.
+
+_______________________________________________________________
+
+>>>	Optimización de consultas
+
+Reducir al mínimo coste total asociado con la ejecución de una solicitud 
+
+Los costos asociados con una solicitud son una funcion(Rob, 2004)
+
+-Del costo del tiempo de acceso (E/S) implicado al acceder los datos físicos guardados en disco
+
+- Del costo de comunicación asociado con la transmisión de datos entre nodos en sistemas de base de datos distribuidos.
+
+Del costo de tiempo de CPU asociado con la sobrecarga de procesamiento de manejar transacciones distribuidas.
+
+La mayoría de los algoritmos propuestos para una optimización de consultas se base en dos principios
+
+- La selección del orden de ejecución optimo.
+
+- La selección de los sitios a ser accedidos para reducir los costos.
+----------------------------------------------------------------
+
+Optimización de consultas automático: el DDBMS localiza la ruta de acceso mas barata sun la intervención del usuario.
+
+Optimización de consultas manual: Requiere que la optimización sea seleccionada y programada por el usuario o programador.
+
+En la optimización de consulta estatica , la mejor estrategia de optimización se selecciona cuando la consulta es compilada por el DBMS
+
+La optimización de consulta dinámica ocurre en tiempo de ejecución
+
+- la estrategia de acceso a la base de datos se define por como se ejecuta el programa.
+
+_______________________________________________________________
+
+Las técnicas de optimización de consulta
+
+- Basado en estadísticas
+--> Proporcionan información sobre características de la BD tales como tamaño, numero de registros , tiempo de acceso promedio, numero de solicitudes atendidas, numero de usuarios con derechos de acceso.
+
+- Basado en reglas 
+Se basa en un conjunto de reglas definidas por el usuario para determinar la mejor estrategia de acceso a la consulta
+
+Las reglas son ingresadas por el usuario y son de naturaleza general.
+
+_______________________________________________________________
+
+>>	TRANSPARENCIA DE HETEROGENOIDAD
+
+Permite la integración de varios sistemas de administración de base de datos locales diferentes (relacional, red, jerárquico, multimedia ,etc) conforme un esquema global común.
+
+________________________________________________________________
+
+DEBER SISTEMAS DE BDD PARA EL 05-09-2025:
+
+INSTALAR LA VERSION OPERATIVA UBUNTU LA MAS ESTABLE (EL 20)

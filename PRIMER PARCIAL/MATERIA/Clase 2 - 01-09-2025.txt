@@ -1,0 +1,314 @@
+Clase SBDD
+Lunes 01-09-2025
+___________________________________________________________
+
+>>	BDD
+
+Definición -> Base de datos tradicional, dividida en diferentes partes físicamente dispersas y que es transparente para el usuario desde cualquier nodo.
+
+- DDBMS(Dsitribuited Database Managment System) rige el almacenamiento y procesamiento de datos y se distribuyen en varios sitios(Rob Peter 2004)
+
+___________________________________________________________
+
+>>	Componentes del sistema de Administración de Base de Datos distribuidas
+
+-> Estaciones de trabajo(sitios y nodos)
+
+-> Componentes de software y hardware(baja,media o alta gama)
+
+-> Medios de comunicación(la red)
+
+-> El procesador de transacciones(Sistema Gestor de BD)(el administrador de BD hace esto)
+
+-> El procesador de datos(Servidor se debe configurar)
+
+___________________________________________________________
+
+>>	Características de un SMBD BDD
+
+1. Recibe la solicitud (usuario)
+2. Valida,analiza y dscompone la solicitud(Op matemáticas,logicas o ambas) -> Procesador de datos
+3. Descompone la solicitud en varias operaciones I/O de disco 
+4. Busca, localiza, lee y valida ls datos -> Procesador de transacciones
+
+*5.- Garantiza la consistencia, la seguirdad y la integridad. -> se hace en el medio de comunicacion.
+
+6.- Valida los datos de conformidad con las condiciones. -> En las Querys en el gestor de transaciones
+7.- Presenta los datos em el formato requerido -> Lenguaje SQL
+8.- Todas las actividades son transparentes para el usuario.
+___________________________________________________________
+
+>>	Clasificación de las BDD
+
+- Clasificación de Peter Rob
+- Clasificación de Peter Rob
+
+###	Proceso n un solo sitio
+#	Datos en un solo sitio
+Un solo DBMS anfitrion
+#	Datos en sitios multiples 
+No aplicable
+
+### 	Proceso n un multiples sitio
+#	Datos en un solo sitio
+No requiere procsos multiples
+#	Datos en sitios multiples 
+DDBMS Cliente/Servidor totalmente distribuidas
+___________________________________________________________
+
+>>	Procesamiento en sistios multiples y datos en sitios multiples
+
+Que sean homogéneas (tienen algo en común) — por ejemplo, que el lenguaje sea MySQL en todas las DBMS.
+Que sean heterogéneas (no tienen nada en común).
+
+___________________________________________________________
+
+
+>>	Ventajas y desventajas de DDBMS
+
+Ventajas
+
+1. Los datos se localizan cerca del sitio de "mayor demanda"
+2. Acceso mas rápido a los datos
+3. Procesamiento mas rápido de los datos.
+4. Facilita el crecimiento
+5. Comunicaciones mejoradas
+6. Costos de operación reducidos
+7. Interface de usuario fácil de usar
+8. Menos peligro de falla en un solo punto
+9. Independencia del procesador 
+
+Desventajas
+
+1. El rendimiento puede afectarse por la carga de trabajo
+2. La confiabilidad de los sistemas disribuidos, por la complejidad de los componentes: ordenadores de red , almacenamiento, transacciones , replicación, etc.
+3.- Por mayor complejidad ,los gastos de construcción.
+___________________________________________________________
+
+>>	Niveles de transparencia 
+
+- Se puede entender como la separación de la semántica de alto ivel de un sistema de los aspectos de bajo nivel relacionados a la implementación del mismo
+
+- Separar semánticamente -> por orden -> altos y en bajos - prioridades 
+
+- Propiedad común de que el usuario sienta que es el único que lo usa.
+
+1. Transparencia de heterogeneidad
+2. Transparencia de desempeño
+3. Transparencia de falla
+4. Transparencia de replicación
+5. Transparencia de transacción
+6. Transparencia de distribución
+
+7. Independencia de datos
+8. datos   _---> DEBE LLEGAR AQUI
+
+___________________________________________________________
+
+Tres niveles de transparencia de distribución(Rob,2004)
+
+1. La Transparencia de Fragmentación 
+2. La Transparencia de Ubicación
+3. La Transparencia Ubicación local
+
+___________________________________________________________
+
+CASO 1
+- La base de datos soporta transparencia de fragmentación 
+
+
+___________________________________________________________
+
+
+CONNECT SYSTEM;
+
+CREATE USER UNIVERSIDAD IDENTIFIED BY UNI;
+GRANT CONNECT, RESOURCE, UNLIMITED TABLESPACE TO UNIVERSIDAD;
+
+CREATE TABLE CAMPUS(
+ID_CAMP VARCHAR(10) PRIMARY KEY,
+NOM_CAMP VARCHAR(30) NOT NULL,
+DIR_CAMP VARCHAR(10) NOT NULL
+)
+
+CREATE TABLE CARRERAS(
+ID_CAR VARCHAR(10) PRIMARY KEY,
+NOM_CAR VARCHAR(30) NOT NULL,
+ID_CAMP_PER VARCHAR(10) NOT NULL
+)
+
+INSERT INTO CAMPUS (ID_CAMP, NOM_CAMP, DIR_CAMP) VALUES
+('C01', 'Campus Ingahurco', 'Ambato');
+INSERT INTO CAMPUS (ID_CAMP, NOM_CAMP, DIR_CAMP) VALUES('C02', 'Campus Huachi', 'Ambato');
+INSERT INTO CAMPUS (ID_CAMP, NOM_CAMP, DIR_CAMP) VALUES
+('C03', 'Campus Querochaca', 'Cevallos');
+
+
+-- =========================
+-- TABLA CAMPUS
+-- =========================
+INSERT INTO CAMPUS (ID_CAMP, NOM_CAMP, DIR_CAMP) VALUES ('C01', 'Campus Ingahurco', 'Ambato');
+INSERT INTO CAMPUS (ID_CAMP, NOM_CAMP, DIR_CAMP) VALUES ('C02', 'Campus Huachi', 'Ambato');
+INSERT INTO CAMPUS (ID_CAMP, NOM_CAMP, DIR_CAMP) VALUES ('C03', 'Campus Querochaca', 'Cevallos');
+
+-- =========================
+-- TABLA CARRERAS
+-- =========================
+
+-- Facultad de Ciencia e Ingeniería en Alimentos (Ingahurco)
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR01', 'Ingeniería en Alimentos', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR02', 'Biotecnología', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR03', 'Bioquímica', 'C01');
+
+-- Facultad de Ciencias Administrativas (Ingahurco)
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR04', 'Administración de Empresas', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR05', 'Mercadotecnia', 'C01');
+
+-- Facultad de Ciencias Agropecuarias (Querochaca)
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR06', 'Agronomía', 'C03');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR07', 'Ingeniería Agronómica', 'C03');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR08', 'Medicina Veterinaria', 'C03');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR09', 'Medicina Veterinaria y Zootecnia', 'C03');
+
+-- Facultad de Ciencias de la Salud (Huachi)
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR10', 'Enfermería', 'C02');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR11', 'Estimulación Temprana', 'C02');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR12', 'Fisioterapia/Terapia Física', 'C02');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR13', 'Laboratorio Clínico', 'C02');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR14', 'Medicina', 'C02');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR15', 'Nutrición y Dietética', 'C02');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR16', 'Psicología Clínica', 'C02');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR17', 'Terapia Física', 'C02');
+
+-- Facultad de Ciencias Humanas y de la Educación (Huachi)
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR18', 'Educación Básica', 'C02');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR19', 'Educación Parvularia', 'C02');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR20', 'Cultura Física', 'C02');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR21', 'Turismo y Hotelería', 'C02');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR22', 'Idiomas', 'C02');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR23', 'Docencia en Informática', 'C02');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR24', 'Psicología Industrial', 'C02');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR25', 'Pedagogía de la Actividad Física y Deportes', 'C02');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR26', 'Psicopedagogía', 'C02');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR27', 'Educación Inicial', 'C02');
+
+-- Facultad de Contabilidad y Auditoría (Ingahurco)
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR28', 'Contabilidad y Auditoría', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR29', 'Economía', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR30', 'Ingeniería Financiera', 'C01');
+
+-- Facultad de Diseño y Arquitectura (Ingahurco)
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR31', 'Arquitectura', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR32', 'Diseño Gráfico', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR33', 'Diseño Textil e Indumentaria', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR34', 'Diseño Industrial', 'C01');
+
+-- Facultad de Ingeniería Civil y Mecánica (Ingahurco)
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR35', 'Ingeniería Civil', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR36', 'Ingeniería Mecánica', 'C01');
+
+-- Facultad de Ingeniería en Sistemas, Electrónica e Industrial (Ingahurco)
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR37', 'Sistemas Computacionales e Informáticos', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR38', 'Electrónica y Telecomunicaciones', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR39', 'Industrial en Procesos de Automatización', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR40', 'Tecnologías de la Información', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR41', 'Telecomunicaciones', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR42', 'Ingeniería Industrial', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR43', 'Software', 'C01');
+
+-- Facultad de Jurisprudencia y Ciencias Sociales (Ingahurco)
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR44', 'Derecho', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR45', 'Comunicación Social', 'C01');
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER) VALUES ('CAR46', 'Trabajo Social', 'C01');
+
+
+-- Carreras del Campus Ingahurco
+SELECT NOM_CAR
+FROM CARRERAS
+WHERE ID_CAMP_PER = 'C01';
+
+-- Carreras del Campus Huachi
+SELECT NOM_CAR
+FROM CARRERAS
+WHERE ID_CAMP_PER = 'C02';
+
+-- Carreras del Campus Querochaca
+SELECT NOM_CAR
+FROM CARRERAS
+WHERE ID_CAMP_PER = 'C03';
+
+ALTER TABLE CARRERAS
+ADD CUP_DISP INT NOT NULL DEFAULT 0;
+
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR01', 'Ingeniería en Alimentos', 'C01', 50);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR02', 'Biotecnología', 'C01', 40);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR03', 'Bioquímica', 'C01', 35);
+
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR04', 'Administración de Empresas', 'C01', 60);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR05', 'Mercadotecnia', 'C01', 55);
+
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR06', 'Agronomía', 'C03', 45);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR07', 'Ingeniería Agronómica', 'C03', 40);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR08', 'Medicina Veterinaria', 'C03', 30);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR09', 'Medicina Veterinaria y Zootecnia', 'C03', 25);
+
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR10', 'Enfermería', 'C02', 50);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR11', 'Estimulación Temprana', 'C02', 40);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR12', 'Fisioterapia/Terapia Física', 'C02', 35);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR13', 'Laboratorio Clínico', 'C02', 30);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR14', 'Medicina', 'C02', 60);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR15', 'Nutrición y Dietética', 'C02', 40);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR16', 'Psicología Clínica', 'C02', 35);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR17', 'Terapia Física', 'C02', 30);
+
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR18', 'Educación Básica', 'C02', 50);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR19', 'Educación Parvularia', 'C02', 40);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR20', 'Cultura Física', 'C02', 35);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR21', 'Turismo y Hotelería', 'C02', 30);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR22', 'Idiomas', 'C02', 45);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR23', 'Docencia en Informática', 'C02', 40);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR24', 'Psicología Industrial', 'C02', 35);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR25', 'Pedagogía de la Actividad Física y Deportes', 'C02', 30);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR26', 'Psicopedagogía', 'C02', 25);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR27', 'Educación Inicial', 'C02', 20);
+
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR28', 'Contabilidad y Auditoría', 'C01', 60);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR29', 'Economía', 'C01', 50);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR30', 'Ingeniería Financiera', 'C01', 45);
+
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR31', 'Arquitectura', 'C01', 40);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR32', 'Diseño Gráfico', 'C01', 35);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR33', 'Diseño Textil e Indumentaria', 'C01', 30);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR34', 'Diseño Industrial', 'C01', 25);
+
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR35', 'Ingeniería Civil', 'C01', 50);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR36', 'Ingeniería Mecánica', 'C01', 40);
+
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR37', 'Sistemas Computacionales e Informáticos', 'C01', 60);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR38', 'Electrónica y Telecomunicaciones', 'C01', 50);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR39', 'Industrial en Procesos de Automatización', 'C01', 45);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR40', 'Tecnologías de la Información', 'C01', 40);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR41', 'Telecomunicaciones', 'C01', 35);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR42', 'Ingeniería Industrial', 'C01', 50);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR43', 'Software', 'C01', 60);
+
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR44', 'Derecho', 'C01', 60);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR45', 'Comunicación Social', 'C01', 50);
+INSERT INTO CARRERAS (ID_CAR, NOM_CAR, ID_CAMP_PER, CUP_DISP) VALUES ('CAR46', 'Trabajo Social', 'C01', 45);
+
+SELECT * 
+FROM CARRERAS 
+WHERE ID_CAMP_PER = C01;
+UNION 
+SELECT * 
+FROM CARRERAS 
+WHERE ID_CAMP_PER = C03;
+
+Catalogo de datos distribuidos (DDC)
+
+_____________________________________________________________
+
+Trabajo
+
+Para el dia viernes en la BD del curso revisar que dice en el "Ejmplo de Base Universidad" se puede en MySQL, Oracle la intención es replicar y interactuar y describir que hace cada cosa 
+

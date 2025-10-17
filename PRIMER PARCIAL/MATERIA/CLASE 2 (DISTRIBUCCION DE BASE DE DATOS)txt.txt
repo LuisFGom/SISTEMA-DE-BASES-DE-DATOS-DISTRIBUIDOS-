@@ -1,0 +1,360 @@
+
+	BASES DE DATOS DISTRIBUIDAS 
+
+3 COSAS PRINCIPALES:
+
+ - SOFTWARE
+
+ - RED
+
+ -
+
+COMPONENTES DEL SISTEMA DE ADMINISTRACION DE BASE DE DATOS DISTRIBUIDA
+
+ - ESTACIONES DE TRABAJO (SITIOS Y NODOS) -> CLIENTES
+
+ - COMPONENTES DE SOFTWARE Y HARDWARE -> SISTEMAS Y COMPUTADORAS 
+
+ - MEDIOS DE COMUNICACION -> RED
+
+ - EL PROCESADOR DE TRANSACCIONES -> EN EL SISTEMA DE GESTION DE BASE DE DATOS -> CONFIGURA EL ADMINISTRADOR DE BASE DE DATOS
+
+ - EL PROCESADOR DE DATOS -> ESTA EN EL SERVIDOR 
+
+CARACTERISTICAS DE UN SYSTEM MAGNAMENT BASE DATE
+
+ 1.- Recibe solicitud de una aplicación (o de un usuario).
+
+ 2.- Valida, analiza y descompone la solicitud. Operaciones matemáticas o lógicas o ambas. Datos de una sola tabla o acceso a varias.
+
+ 3.- Descompone la solicitud en varias operaciones I/O de disco.
+
+ 4.- Busca, localiza, lee y valida los datos.
+
+ 5.- Garantiza la consistencia, la seguridad y la integridad.
+
+ 6.- Valida los datos de conformidad con las condiciones, si las hay, especificadas por la solicitud.
+
+ 7.- Presenta los datos seleccionados en el formato requerido.
+
+ 8.- Todas estas actividades son transparentes para el usuario.
+
+CLASIFICACION DE LAS BASE DE DATOS DISTRIBUIDAS 
+
+ - Clasificación de Peter Rob(Rob,2004): Las bases de datos se clasificación en base cómo la distribución de los procesos y datos son soportados
+						DB CENTRALIZADA, DB DISTRIBUIDA.
+
+					 Procesamiento de datos en un solo sitio o varios.
+
+ - Procesamiento en un solo sitios y datos en un solo sitio ... .
+
+ - Procesamiento en sitios múltiples y datos en un solo sitio MPSD.
+
+ - Procesamiento en sitios múltiples y datos en sitios multiples SMBDD.
+
+ - Homogeneas y Heterogenas 
+
+   Una cosa      Varias cosas
+   en comun       en comun
+
+-> Procesamiento en sitios multiples y datos en sitios multiples -> SMBDD HOMOGENAS -> Cuando coinicide almenos uno solo entre todos 
+
+-> Procesamiento en sitios multiples y datos en sitios multiples -> SMBDD HETEROGENAS 
+
+VENTAJAS DE LOS SISTEMAS DE ADMINISTRACION DE BASE DE DATOS DISTRIBUIDA (DDBMS)
+
+ 1.- Los datos se localizan cerca del sitio de "mayor demanda".
+
+ 2.- Acceso mas rapido a los datos.
+
+ 3.- Procesamiento más rapido de los datos.
+
+ 4.- Facilita el crecimiento.
+
+ 5.- Comunicaciones mejoradas.
+
+ 6.- Costos de operacion reducidos.
+
+ 7.- Interface de usuario facil de usar.
+
+ 8.- Menos peligro de falla en un solo punto.
+
+ 9.- Independencia del procesador.
+
+PROBLEMAS QUE SE PRESENTAN EN LAS BASES DE DATOS DISTRIBUIDAS
+
+ 1.- El rendimiento puede afectarse por la carga de trabajo.
+
+ 2.- La confiabilidad de los sistemas distribuidos, por la complejidad de los componentes: ordenadores, red, almacenamiento, transacciones, replicación, etc.
+
+ 3.- Por mayor complejidad ……
+
+ 4.-
+
+NIVELES DE TRANSPARENCIA DE UNA BASE DE DATOS DISTRIBUIDA 
+
+La transparencia se puede entender como la separación de la semántica de alto nivel de un sistema de los aspectos de bajo nivel relacionados o la implementación del mismo.
+
+ SEMANTICAMENTE -> POR ORDEN O PRIORIDADES 
+
+	TRANSPARENCIA DE HETEROGENEIDAD 
+	TRANSPARENCIA DE DESEMPEÑO 
+	TRANSPARENCIA DE FALLA
+	TRANSPARENCIA DE REPLICACION 
+	TRANSPARENCIA DE TRANSACCION 
+	TRANSPARENCIA DE DISTRIBUCION 
+
+	INDEPENDENCIA DE DATOS 
+
+		DATOS
+
+-> 1.- TRANSPARENCIA DE DISTRIBUCION 
+
+	Permite manejar una base de datos físicamente dispersa como si fuera centralizada.
+	Tres niveles de transparencia de distribución:
+		-La transparencia de fragmentación 
+		-La transparencia de ubicación 
+		-La transparencia de ubicación local 
+
+CREAR UNA BASE DE DATOS LLAMADA UNIVERSIDAD Y DENTRO DE ESA CREAR EXTENSIONES 3 EXTENSIONES Y DENTRO DE CADA UNA LAS CARRERAS QUE SE TIENE EN CADA UNA
+
+CREATE USER UNIVERSIDAD IDENTIFIED BY UNIVER;
+
+GRANT CONNECT, RESOURCE, UNLIMITED TABLESPACE TO UNIVERSIDAD;
+
+CONNECT UNIVERSIDAD/UNIVER;
+
+CREATE TABLE CAMPUS
+(ID_CAM VARCHAR(5) PRIMARY KEY, 
+ NOM_CAM VARCHAR(20) NOT NULL,
+ UBI_CAP VARCHAR(30) NOT NULL);
+
+INSERT INTO CAMPUS VALUES('CAMP1','CAMPUS INGAHURCO','INGAHURCO');
+INSERT INTO CAMPUS VALUES('CAMP2','CAMPUS QUEROCHACA','QUEROCHACA');
+INSERT INTO CAMPUS VALUES('CAMP3','CAMPUS HUACHI','HUACHI');
+
+
+CREATE TABLE CARRERAS
+(ID_CAR VARCHAR(5) PRIMARY KEY,
+ NOM_CAR VARCHAR(50) NOT NULL,
+ CAM_PER_CAR REFERENCES CAMPUS(ID_CAM),
+ CUPOS_DISPONIBLES NUMBER NOT NULL);
+
+INSERT INTO CARRERAS VALUES('CAR1','TECNOLOGIAS DE LA INFORMACION','CAMP3',20);
+INSERT INTO CARRERAS VALUES('CAR2','TELECOMUNICACIONES','CAMP3',50);
+INSERT INTO CARRERAS VALUES('CAR3','INGENIERIA INDUSTRIAL','CAMP3',10);
+
+INSERT INTO CARRERAS VALUES('CAR4','MEDICINA','CAMP1',60);
+INSERT INTO CARRERAS VALUES('CAR5','ENFERMERIA','CAMP1',5);
+INSERT INTO CARRERAS VALUES('CAR6','AUXILIAR EN ENFERMERIA','CAMP1',60);
+
+INSERT INTO CARRERAS VALUES('CAR7','AGRONOMIA','CAMP2',70);
+INSERT INTO CARRERAS VALUES('CAR8','VETERINARIA','CAMP2',90);
+INSERT INTO CARRERAS VALUES('CAR9','BIOTECNOLOGIA','CAMP2',40);
+
+SELECT C.NOM_CAR, A.NOM_CAM
+FROM CARRERAS C,CAMPUS A 
+WHERE C.CAM_PER_CAR = 'CAMP1'
+AND C.CAM_PER_CAR = A.ID_CAM
+AND C.CUPOS_DISPONIBLES>2;
+
+SELECT C.NOM_CAR, A.NOM_CAM, C.CUPOS_DISPONIBLES
+FROM CARRERAS C,CAMPUS A 
+WHERE C.CAM_PER_CAR = A.ID_CAM
+AND C.CUPOS_DISPONIBLES>70;
+
+SELECT C.NOM_CAR, A.NOM_CAM
+FROM CARRERAS C,CAMPUS A 
+WHERE C.CAM_PER_CAR = 'CAMP1'
+AND C.CAM_PER_CAR = A.ID_CAM
+AND C.CUPOS_DISPONIBLES>2
+UNION
+SELECT C.NOM_CAR, A.NOM_CAM
+FROM CARRERAS C,CAMPUS A 
+WHERE C.CAM_PER_CAR = 'CAMP2'
+AND C.CAM_PER_CAR = A.ID_CAM
+AND C.CUPOS_DISPONIBLES>70
+UNION
+SELECT C.NOM_CAR, A.NOM_CAM
+FROM CARRERAS C,CAMPUS A 
+WHERE C.CAM_PER_CAR = 'CAMP3'
+AND C.CAM_PER_CAR = A.ID_CAM
+AND C.CUPOS_DISPONIBLES>10;
+
+---------------------------------------
+
+SELECT C.NOM_CAR, A.NOM_CAM, C.CUPOS_DISPONIBLES
+FROM CARRERAS C,CAMPUS A 
+WHERE C.CAM_PER_CAR = 'CAMP1'
+AND C.CAM_PER_CAR = A.ID_CAM
+AND C.CUPOS_DISPONIBLES=(SELECT(MAX(CUPOS_DISPONIBLES))
+			 FROM CARRERAS
+			 WHERE CAM_PER_CAR = 'CAMP1')
+UNION
+SELECT C.NOM_CAR, A.NOM_CAM, C.CUPOS_DISPONIBLES
+FROM CARRERAS C,CAMPUS A 
+WHERE C.CAM_PER_CAR = 'CAMP2'
+AND C.CAM_PER_CAR = A.ID_CAM
+AND C.CUPOS_DISPONIBLES=(SELECT(MAX(CUPOS_DISPONIBLES))
+			 FROM CARRERAS
+			 WHERE CAM_PER_CAR = 'CAMP2')
+UNION
+SELECT C.NOM_CAR, A.NOM_CAM, C.CUPOS_DISPONIBLES
+FROM CARRERAS C,CAMPUS A 
+WHERE C.CAM_PER_CAR = 'CAMP3'
+AND C.CAM_PER_CAR = A.ID_CAM
+AND C.CUPOS_DISPONIBLES=(SELECT(MAX(CUPOS_DISPONIBLES))
+			 FROM CARRERAS
+			 WHERE CAM_PER_CAR = 'CAMP3');
+
+
+SELECT C.NOM_CAR, A.NOM_CAM, C.CUPOS_DISPONIBLES
+FROM CARRERAS C,CAMPUS A 
+WHERE C.CAM_PER_CAR = A.ID_CAM
+AND C.CUPOS_DISPONIBLES=(SELECT(MAX(CUPOS_DISPONIBLES))
+			 FROM CARRERAS);
+
+------------------------------------
+
+TRANSPARENCIA DE DISTRIBUCION 
+
+Según el nivel de soporte de la transparencia de distribución, pueden examinarse tres casos de consulta:
+
+	1.- CASO 1: La base de datos soporta transparencia de fragmentación.
+
+	2.- CASO 2: La base de datos soporta transparencia de ubicación.
+
+	3.- CASO 3: La base de datos soporta transparencia de ubicación local.
+
+--------------------------------------
+
+TRANSPARENCIA DE TRANSACCION 
+
+Permite que una transaccion actualice datos en varios sitios de la red. La transparecia de transaccion 
+grantiza que la transaccion se realiza o se completara en su totalidad o abortada, con la cual se mantiene la integridad 
+de la base de datos.
+
+FORMATO DE UNA TRANSACCION:
+
+BEGIN WORK      ->  Inicio de la transaccion 
+
+Select bla bla bla     --- 
+			 |	
+Update bla bla bla 	 | -> Solicitudes 
+ 			 |
+Delete bla bla bla    ----
+
+COMMIT WORK     -> Fin de la transaccion 
+
+
+- Transaccion No Distribuida
+
+- Transaccion Distribuida: Actualiza y solicita datos de varios sitios remotos en una red.
+
+- Transaccion Remota: Está compuesta de varias solicitudes y puede acceder datos en un solo sitio.
+
+
+- Solicitud remota:
+
+Permite acceder a los datos que seran procesados por un solo procesador de base de datos remoto.
+
+La sentencia o solicitud SQL puede hacer referencia en un solo sitio remoto.
+
+
+
+-> Transaccion Remota
+
+La transaccion actualiza las tablas CLIENTE y FACTURA. Ambas tablas estan en el sitio B
+
+La transacccion puede hacer referencia solamente a un procesador de datos remoto.
+
+
+-> Transaccion Distribuida 
+
+Permite que una transaccion haga referenci a varios sitios de procesamiento de datos distribuidas (locales y remoto)
+
+Cada solicitud puede hacer referencia a solo un sitio de procesamiento de datos (o aun lugar diferente)
+
+
+-> Una SOLICITUD DISTRIBUIDA permite hacer referencia a datos de varios sitios remotos de procesamiento de datos remotos.
+
+Proporciona capacidades de procesamiento de BD totalmente distribuida:
+
+	- Dividir una tabla en varios fragmentos 
+
+	- Hacer referencias a uno o mas de esos fragmentos solamente con solicitudes.
+
+
+-> Transparencia de replicacion.
+
+ La transparencia de replicacion de datos se refiere a que, si existen copias de objetos de la base de datos , su existencia debe ser controlada por el sistema 
+ no por el usuairo .
+
+
+-> Transparencia de falla
+
+Permite que el sistema continue operando en el caso de una falla de nodo. Las funciones que se perdieron a causa
+de la flla seran recobradas por otro nodo de la red.
+
+
+-> TRANSPARENCIA DE DESEMPEÑO 
+
+La transparencia de desempeño permite que cuando los objetos de la base de datos estan fragmentados, el sistema maneja la conversion de consultas de usuario definidas 
+sobre relaciones globales a consultas difinidas sobre fragmentos. Asi tambien, mezcla las respuestas a consultas fragmentadas
+para obtener una sola respuesta a una consulta global.
+
+
+-optimizacion de consultas
+
+ reducir al minimo el costo total asociado con la ejecucion de una solicitud.
+
+
+-> OPTIMIZACION DE CONSULTAS 
+
+Los cotos asociados con una solicitud son una funcion:
+
+ - Del costo del tiempo de acceso implicado al acceder los datos fisicos guardados en disco.
+
+ - Del costo de comunicacion asociado con la trnasmision de datos entre nodos en sistemas de base de datos distribuidos.
+
+ - Del costo de tiempo de CPU asociado con la sobrecarga de procesamiento de manejar transacciones distribuidas.
+
+La mayoria de los algoritmos propuestos para una optimizacion de consultas se basan en dos principios:
+
+	- La seleccion del orden de ejecucion optimo.
+
+	- La seleccion de los sitios a ser accedidos para reducir los costos.
+
+Los modos de operacion se clasifican como manuales o automaticos. 
+
+ - Optimizacion de consultas AUTOMATICO: el DDBMS localiza la ruta de acceso mas barata segun la intervencion del usuario.
+
+ - Optimizacion de consultas MANUAL: Requiere que la optimizacion sea seleccionada y programada por el usuario o programador.
+
+En la optimiacion de consulta estatica, la mejor estrategia de optimizacion se selecciona cuando la consulta es complicada por el DBMS.
+
+La optimizacion de consulta dinamica ocurre en tiempo de ejecucion:
+ 
+ - La estrategia de acceso a la base de datos se define por como se ejecuta el programa.
+
+------------------------
+
+TECNICA DE OPTIMIZACION DE CONSULTAS
+
+- Basado en ESTADISTICA 
+
+Las estadisticas proporcionan informacion sobre caracteristicas de la base de datos tales como tamaño 
+numero de registros, tiempo de acceso promedio, numero de solicitudes atendidas, numero de usaurios con derechos de acceso.
+
+- Basado en REGLAS
+
+Se basa en un conjunto de reglas definidas por el usuario para determinar la mejor estrategia de acceso a la consulta.
+
+--------------------------
+
+-> TRANSPARENCIA DE HETEROGENEIDAD 
+
+Permite la integracion de vario sistemas de bases de datos locales diferentes (relacional, red, jerarquicos, multimedia, etc)
+conforme un esquema global comun 
+
+ 

@@ -1,0 +1,102 @@
+Server [localhost]:
+Database [postgres]:
+Port [5432]:
+Username [postgres]:
+Contraseña para usuario postgres:
+
+psql (17.6)
+ADVERTENCIA: El código de página de la consola (850) difiere del código
+            de página de Windows (1252).
+            Los caracteres de 8 bits pueden funcionar incorrectamente.
+            Vea la página de referencia de psql «Notes for Windows users»
+            para obtener más detalles.
+Digite «help» para obtener ayuda.
+
+postgres=# CREATE DATABASE musicdb;
+CREATE DATABASE
+postgres=# \c musicdb;
+Ahora está conectado a la base de datos «musicdb» con el usuario «postgres».
+musicdb=# CREATE TABLE orchestras (
+musicdb(#     id SERIAL PRIMARY KEY,
+musicdb(#     name VARCHAR(100) NOT NULL,
+musicdb(#     rating DECIMAL(3,2),
+musicdb(#     city_origin VARCHAR(50),
+musicdb(#     country_origin VARCHAR(50),
+musicdb(#     year INT
+musicdb(# );
+CREATE TABLE
+musicdb=# CREATE TABLE concerts (
+musicdb(#     id SERIAL PRIMARY KEY,
+musicdb(#     city VARCHAR(50),
+musicdb(#     country VARCHAR(50),
+musicdb(#     year INT,
+musicdb(#     rating DECIMAL(3,2),
+musicdb(#     orchestra_id INT REFERENCES orchestras(id)
+musicdb(# );
+CREATE TABLE
+musicdb=# CREATE TABLE members (
+musicdb(#     id SERIAL PRIMARY KEY,
+musicdb(#     name VARCHAR(100),
+musicdb(#     position VARCHAR(50),
+musicdb(#     wage DECIMAL(10,2),
+musicdb(#     experience INT,
+musicdb(#     orchestra_id INT REFERENCES orchestras(id)
+musicdb(# );
+CREATE TABLE
+musicdb=# INSERT INTO orchestras (name, rating, city_origin, country_origin, year) VALUES
+musicdb-# ('Sinfónica Quito', 4.5, 'Quito', 'Ecuador', 1970),
+musicdb-# ('Filarmónica NY', 4.8, 'New York', 'USA', 1930),
+musicdb-# ('Orquesta París', 4.2, 'Paris', 'Francia', 1900);
+INSERT 0 3
+musicdb=# INSERT INTO concerts (city, country, year, rating, orchestra_id) VALUES
+musicdb-# ('Quito', 'Ecuador', 2013, 4.6, 1),
+musicdb-# ('New York', 'USA', 2012, 4.9, 2),
+musicdb-# ('Paris', 'Francia', 2013, 4.3, 3);
+INSERT 0 3
+musicdb=# INSERT INTO members (name, position, wage, experience, orchestra_id) VALUES
+musicdb-# ('Juan Pérez', 'Violin', 1200.00, 5, 1),
+musicdb-# ('Anna Smith', 'Piano', 2000.00, 8, 2),
+musicdb-# ('Marie Dubois', 'Cello', 1500.00, 6, 3);
+INSERT 0 3
+musicdb=# SELECT * FROM orchestras;
+ id |      name       | rating | city_origin | country_origin | year
+----+-----------------+--------+-------------+----------------+------
+  1 | Sinfónica Quito |   4.50 | Quito       | Ecuador        | 1970
+  2 | Filarmónica NY  |   4.80 | New York    | USA            | 1930
+  3 | Orquesta París  |   4.20 | Paris       | Francia        | 1900
+(3 filas)
+
+
+musicdb=# SELECT * FROM concerts;
+ id |   city   | country | year | rating | orchestra_id
+----+----------+---------+------+--------+--------------
+  1 | Quito    | Ecuador | 2013 |   4.60 |            1
+  2 | New York | USA     | 2012 |   4.90 |            2
+  3 | Paris    | Francia | 2013 |   4.30 |            3
+(3 filas)
+
+
+musicdb=# SELECT * FROM members;
+ id |     name     | position |  wage   | experience | orchestra_id
+----+--------------+----------+---------+------------+--------------
+  1 | Juan Pérez   | Violin   | 1200.00 |          5 |            1
+  2 | Anna Smith   | Piano    | 2000.00 |          8 |            2
+  3 | Marie Dubois | Cello    | 1500.00 |          6 |            3
+(3 filas)
+
+
+musicdb=# SELECT o.name
+musicdb-# FROM orchestras o
+musicdb-# WHERE o.city_origin IN (
+musicdb(#     SELECT c.city
+musicdb(#     FROM concerts c
+musicdb(#     WHERE c.year = 2013
+musicdb(# );
+      name
+-----------------
+ Sinfónica Quito
+ Orquesta París
+(2 filas)
+
+
+musicdb=#

@@ -1,0 +1,71 @@
+Clase Viernes, 29-08-2025
+
+Silabo y plan analitico
+___________________________________________________________________________
+
+
+Instrucciones (post inicial – 120 a 180 palabras):
+
+Quién eres: nombre y cómo prefieres que te llamen; carrera/semestre.
+
+Expectativas concretas (2–3): qué esperas aprender entre agosto y enero (temas, habilidades o productos).
+
+Fortalezas y retos: ¿en qué te sientes fuerte? ¿qué te preocupa del curso y cómo planeas enfrentarlo? ¿te consideras lider ? 
+
+Meta SMART del periodo: una meta medible para este curso (ej.: “aprobar con ≥85, entregando todas las tareas a tiempo”).
+
+Disponibilidad y recursos: horarios de estudio y estado de conectividad.
+
+Dato opcional: interés personal o proyecto en el que te gustaría aplicar lo aprendido.
+
+Interacción:
+
+Responde a 2 compañeros/as con retroalimentación útil (preguntas, sugerencias o recursos).
+
+Sé respetuoso/a y claro/a. Evita datos sensibles; no compartas información personal que no desees publicar.
+
+___________________________________________________________________
+
+
+Presentación
+de ALEX PATRICIO CAGUASANGO BAYAS - viernes, 29 de agosto de 2025, 09:44
+Número de respuestas: 2
+¿Quién eres?
+Mi nombre es Alex Patricio Caguasango Bayas, prefiero que me llamen por el primer nombre, estoy cursando Quinto Semestre.
+
+Mis expectativas son las siguientes:
+
+- Comprender los conceptos establecidos en la asignatura.
+- Poder llevar a cabo simulaciones para casos reales.
+- Aplicar los conocimientos preestablecidos en el ámbito académico de manera practica y organizada.
+
+Fortalezas y retos:
+
+Mis fortalezas son las siguientes:
+- Trabajo en equipo.
+- Empático 
+
+La preocupación respecto al curso es no lograr abarcar toda la información y el estudio del mismo debido a las diferentes temas a analizar. Podría enfréntalo mediante el uso de la Técnica de Feynman la cual logra simplificar la información y el uso de la misma para la explicación hacia personas que no estén familiarizadas al tema base haciendo uso de un dialecto mas coloquial y repitiendo el mismo de manera que logre recordar el contenido explicado. Y no puedo considerarme líder debido a que caigo en el síndrome del Impostor.
+
+Meta SMART del periodo:
+Aprobar el curso con >= 90 y comprender los conocimientos analizados.
+
+Disponibilidad y recursos: 
+Mi horario de disponibilidad es en la tarde de Lunes a Viernes desde las 4:00 pm hasta las 9:00 pm y en base a ello puedo responder cualquier duda o cuestión necesaria por vía WhatsApp. Los fines de semana es poco probable que responda debido a situaciones externas. Puedo colaborar mediante mi laptop o teléfono celular.
+
+Dato Opcional:
+Como interés personal es poder aplicar la información y conocimiento adquirido en diferentes materias en donde podría hacer uso del mismo para sobrellevar mejor las cargas de trabajo.
+___________________________________________________________________
+
+Opinión respecto al Silabo y Plan Analítico de la materia
+de ALEX PATRICIO CAGUASANGO BAYAS - viernes, 29 de agosto de 2025, 10:01
+Número de respuestas: 0
+
+He revisado los contenidos planteados y me parece que están organizados de manera adecuada, ya que abarcan tanto los fundamentos teóricos como los aspectos prácticos. El hecho de iniciar con la diferenciación entre sistemas centralizados y distribuidos resulta muy útil, porque permite tener una base sólida para comprender el porqué de las técnicas que se aplican en la fragmentación y la replicación de datos. Además, considero acertado que se incluya la implementación de esquemas y la construcción de escenarios de replicación, ya que esto no solo refuerza los conceptos, sino que también brinda la oportunidad de trabajar con casos que se asemejan a situaciones reales en el manejo de bases de datos distribuidas.
+
+En general, pienso que el enfoque del curso contribuirá bastante a adquirir una visión integral, combinando la teoría con la práctica, lo cual es fundamental para el desarrollo profesional.
+
+¿Qué piensan ustedes, creen que con estos contenidos se logra cubrir de manera suficiente los desafíos que implica la administración de bases de datos distribuidas?
+
+____________________________________________________________________________
+

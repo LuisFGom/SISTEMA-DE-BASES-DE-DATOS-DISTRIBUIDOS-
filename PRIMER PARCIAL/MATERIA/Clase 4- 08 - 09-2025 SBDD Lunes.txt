@@ -1,0 +1,188 @@
+Clase SBDD
+Fecha: Lunes 08-09-2025
+
+
+Preguntas de clase amterior
+
+En UTA_Distribuida, una consulta a global.extensiones devuelve filas de Huachi, Ingahurco y Querochaca sin que el usuario conozca dónde vive cada fragmento. ¿Qué tipo de transparencia es la principal en juego?
+
+
+
+global.oferta_carrera une (UNION ALL) las tablas site_* .oferta_carrera y el usuario no escribe manualmente múltiples SELECT por sede. ¿Qué nivel de transparencia se ilustra?
+
+- Replicación
+
+Para simplificar consultas, se crean sinónimos carreras, extensiones, oferta que apuntan a las vistas globales; así el usuario no necesita prefijos de esquema. ¿Qué transparencia describe mejor este caso?
+
+- desempeño
+
+Una transacción inserta oferta en Querochaca y actualiza cupos en Huachi como una unidad atómica; si falla un sitio se revierte todo. ¿Qué transparencia se busca demostrar?
+
+-transacción
+
+_______________________________________________________________
+
+
+> 	BDD(Base de datos distribuidas)
+
+- Arquitectura ANSI-SPARC de los sistemas de administración de base de datos(SMBD)
+
+Nivel externo - Esquema Externo Donde los usuarios interactúan y donde se muestran las replicas(Replicas(Querys y View's))
+Nivel Conceptual - esquema Conceptual -Donde se muestran las relaciones entre tablas y BD's.(Modelo relacional)
+Nivel Interno - Esquema Físico. (Script de la BD)
+Datos Almacenados 
+
+_______________________________________________________________
+
+> 	Arquitectutra ANSI-SPARC de los sistemas de admin de BD
+
+>>	En el nivel interno
+- Describe la estructura fisica de la base de datos mediante un esquema interno.
+
+>>	Nivel Conceptual:
+- Se concenyta en describir entidades, atributos ,relaciones ,operaciones de los usuarios y restricciones.
+
+>>	Nivel Interno
+---------------------------------------------------------------
+
+-Los unicos dartos que existen realmente estan a nivel fisico, almacenados en un dispositico como puede ser un disco.
+
+---------------------------------------------------------------
+Nosotros trabajamos en el Fisico pero aun asi el esquema concreptual debe estar bien para que los demas esten correctamente.
+
+Solicitud esquema externo(Vistas) -> Esquema conceptual(Relaciones) -> Esquema Interno(Fisico) -> Base de datos
+
+---------------------------------------------------------------
+
+Basado en datos: Se identifican los diferntes tipos de descripcion de datos
+-Define las unidades funcionales que realizaran y/o usaran los datos de acuerdo.
+
+---------------------------------------------------------------
+>>SABDD Homogeneos
+
+- Tiene multiples colecciones de datos
+- Integra multiples recursos de datos 
+- Se parecen a un sistema centralizado. Datos en varios sitios comunicados por la red.
+- No existen usuarios locales y todos ellos acceden la base de datos a traves de una interfaz global.
+- El esquema global es la unión de todas las descripciones de datos locales.
+
+Su desventaja son los recursos
+---------------------------------------------------------------
+Para manejar los adsoectos de la distribución, se deben agregar dos nuveles a la arquitectura estándar ANSI-SPARC:
+-El esquema de fragmentación describe la forma en que las relaciones globales se dividen entre las base de datos locales.
+-El esquema de asignamiento especifica el lugar en el cual cada fragmento es almacenado.
+---------------------------------------------------------------
+
+SABDD homogéneos
+
+> 	Nivel externo 
+- Esquema externo global 1 o 2 (usuarios)
+- Esquema externo global 
+- Esquema de asignamiento
+- Esquema de fragmentación
+
+>	Nivel conceptual
+-Esquema conceptual local 1 a n -> Correspondencia externa/conceptual
+
+>	Nivel Interno
+- Esquema físico local 1 a n -> Correspondencia externa/conceptual
+
+>	Base de datos
+- Base de datos 1 a n
+
+---------------------------------------------------------------
+
+SABDD
+-Segun David Bell se caracterizan por manejar diferentes sistemas de administración de BD en los nodos locales
+
+- Una subclase son los sistemas de administración de multi. bases de datos.
+
+- Un sistema multi-bases de datos tiene multiples sistemas manejadores de base de datos que pueden ser de tipos diferentes y multiples bases de datos existentes. La integración de todos ellos se realiza mediante subsistemas de software.
+
+- Existen usuarios locales y globales. Los usuarios locales acceden sus base de datos locales sin verse afectados por la presencia del sistema administrador de las multi-bases de datos.
+
+---------------------------------------------------------------
+
+Diseño de una base de datos distribuidas
+- Se basa en los principios del diseño de una base de datos centralizada y contempla los tres puntos siguientes (Marqués, 2001)
+1.- Diseño conceptual de la base de datos. (Se define la relación y entidades)
+2.- Diseño lógico de la base de datos
+3.- Diseño físico de la base de datos
+
+La ubicación de datos y programas a través de los diferentes sitios de una red de computadoras.
+_______________________________________________________________
+
+>> Objetivos del diseño de la distribución de los datos (Bell, 1992)
+-Procesamiento local.
+-Distribución de la carga de trabajo.
+-Costo de almacenamiento y disponibilidad.
+
+>>>	Procesamiento local
+Para maximizar el procesamiento local, colocar los datos tan cerca como sea posible de las aplicaciones que los utilizan.
+
+En el diseño de la distribucion de los datos se puede agregar el numero de	 	referencias locales y remotas que le corresponden a cada fragmentación candidata y la localización del fragmemnto ,y de esta forma se seleccione la mejor de ellas.
+
+>>> Distribución de la carga de trabajo
+Se realiza para tomar ventaja de las diferentes características. 
+
+---------------------------------------------------------------
+>	PROBLEMA DE LA FRAGMENTACION
+
+El problema de la fragmentación
+-Se refiere al particionamiento de la información para distribuir cada parte en los diferentes sitios de la red.
+El diseño de una base de datos distribuida, cualquiera que sea el enfoque que se siga, debe responder satisfactoriamente las siguientes preguntas:
+a. ¿Por qué hacer una fragmentación de datos?
+b. ¿Cómo realizar la fragmentación?
+c. ¿Qué tanto se debe fragmentar?
+d. ¿Cómo probar la validez de una fragmentación?
+e. ¿Cómo realizar el asignamiento de fragmentos?
+f. ¿Cómo considerar los requerimientos de la información?
+
+________________________________________________________________
+
+Fragmentación de una base de datos distribuida .
+
+Oeter rob afirma que la fragmentación de los datos permite dividir un obketo en dos o mas segmentos o fragmentos.
+
+- BD de usuario
+BD de sistema
+- Una tabla
+- Cada fragmento puede guardarse en cualquier sitio en una red de computadores
+
+-La información de la fragmentacion de los datos se guarda en un catalogo de datos distribuidos (DCC,Distributed Data Catalog por sus siglas en ingles , desde donde es accedida por el procesador de transacciones para procesar las solicitudes de los usuarios.)
+
+La tabla se divide en fragmentos lógicos 
+- Fragmentación Horizontal
+- Fragmentación vertical 
+- Fragmentación mezclada
+
+>>	FRAGMENTACION HORIZONTAL 
+- Se refiere a la división de una relación en subconjunto(Frgamentos) de tuplas(filas).
+
+Cada fragmento se guarda en un nodo diferente, y cada uno de ellos tiene filas únicas.
+
+Todas las filas únicas tienen los mismos atributos (columnas). En 
+suma, cada fragmento equivale a una sentencia SELECT, con la 
+cláusula WHERE en un solo atributo
+
+Por ejemplo seria por el estado donde viven los usuarios 
+_____________________________________________________________
+>>	FRAGMENTACION VERTICAL  
+
+La fragmentación vertical se refiere a la división de una relación en subconjuntos de atributos (columna). 
+Cada subconjunto (fragmento) se guarda en un nodo diferente, y  cada fragmento tiene columnas únicas, con la excepción de la columna clave, la cuál es común a todos los fragmentos. 
+
+Esto es el equivalente de la sentencia SELECT columna1, columna2 INTO Nueva_Tabla FROM Tabla.
+
+Tiene que poseer el mismo numero de filas por ejemplo ahi seria el CLi_NUM que se repite en ambos registros 
+_______________________________________________________________
+>>	FRAGMENTACION MEZCLADA
+
+La fragmentación mezclada se refiere a una combinación de estrategias bhorizontales y verticales. 
+
+En otras palabras, una tabla puede dividirse en varios subconjuntos horizontales (filas), y cada una tiene un subconjunto de los atributos (columnas).	
+
+
+________________________________________________________________
+
+

@@ -1,0 +1,130 @@
+INSTANCIA ES EN DONDE VOY A GUARDAR LA REPLICA
+
+INSTACIA -> NODO DONDE SE GUARDAN LOS DATOS
+
+LA INSTANCIA SE CREA EN EL SGBD 
+
+
+CREATE TABLE departamentos (
+    id INT PRIMARY KEY,
+    nombre VARCHAR(50)
+);
+
+CREATE TABLE empleados (
+    id INT PRIMARY KEY,
+    nombre VARCHAR(50),
+    salario NUMERIC(10,2),
+    departamento_id INT,
+    FOREIGN KEY (departamento_id) REFERENCES departamentos(id)
+);
+
+CREATE TABLE proyectos (
+    id INT PRIMARY KEY,
+    nombre VARCHAR(50),
+    departamento_id INT,
+    FOREIGN KEY (departamento_id) REFERENCES departamentos(id)
+);
+
+
+
+INSERT INTO departamentos (id, nombre) VALUES
+(1, 'TI'),
+(2, 'Marketing'),
+(3, 'RRHH');
+
+
+INSERT INTO empleados (id, nombre, salario, departamento_id) VALUES
+(1, 'Ana', 1200.00, 1),
+(2, 'Luis', 1100.00, 2),
+(3, 'Marta', 1250.00, 1),
+(4, 'Carlos', 1000.00, 3),
+(5, 'Sofia', 1150.00, 2),
+(6, 'Pedro', 1300.00, 1);
+
+
+INSERT INTO proyectos (id, nombre, departamento_id) VALUES
+(1, 'Proyecto A', 1),
+(2, 'Proyecto B', 2),
+(3, 'Proyecto C', 1);
+
+
+
+----------------
+
+
+SELECT * FROM EMPLEADOS
+WHERE salario > (SELECT AVG(salario)
+		 FROM EMPLEADOS);
+
+------------
+
+SELECT * FROM departamentos 
+WHERE ID NOT IN (SELECT departamento_id
+		 FROM empleados);
+
+-------------
+
+SELECT nombre, salario 
+FROM EMPLEADOS 
+WHERE salario = (SELECT MAX(salario)
+		FROM EMPLEADOS);
+
+--------------
+
+SELECT 
+    e.nombre,
+    e.salario,
+    (SELECT TRUNC(AVG(salario),2)
+     FROM empleados
+     WHERE departamento_id = e.departamento_id) AS salario_promedio_departamento
+FROM empleados e;
+
+----------------------
+
+WITH promedio_general AS (
+    SELECT TRUNC(AVG(salario), 2) AS avg_general
+    FROM empleados
+)
+SELECT d.nombre AS departamento, TRUNC(AVG(e.salario), 2) AS promedio_departamento
+FROM departamentos d
+JOIN empleados e ON e.departamento_id = d.id
+GROUP BY d.id, d.nombre
+HAVING TRUNC(AVG(e.salario), 2) > (SELECT avg_general FROM promedio_general);
+
+--------------------------------
+
+FRAGMENTACION 
+
+CREATE TABLE empleados_mayor_promedio AS
+SELECT * 
+FROM empleados
+WHERE salario > (SELECT AVG(salario) FROM empleados);
+
+CREATE TABLE departamentos_sin_empleados AS
+SELECT * 
+FROM departamentos 
+WHERE id NOT IN (SELECT departamento_id FROM empleados);
+
+CREATE TABLE empleado_max_salario AS
+SELECT nombre, salario 
+FROM empleados 
+WHERE salario = (SELECT MAX(salario) FROM empleados);
+
+CREATE TABLE salario_promedio_departamento AS
+SELECT e.nombre,
+       e.salario,
+       (SELECT TRUNC(AVG(salario),2)
+        FROM empleados
+        WHERE departamento_id = e.departamento_id) AS salario_promedio_departamento
+FROM empleados e;
+
+CREATE TABLE departamentos_promedio_mayor_general AS
+WITH promedio_general AS (
+    SELECT TRUNC(AVG(salario), 2) AS avg_general
+    FROM empleados
+)
+SELECT d.nombre AS departamento, TRUNC(AVG(e.salario), 2) AS promedio_departamento
+FROM departamentos d
+JOIN empleados e ON e.departamento_id = d.id
+GROUP BY d.id, d.nombre
+HAVING TRUNC(AVG(e.salario), 2) > (SELECT avg_general FROM promedio_general);

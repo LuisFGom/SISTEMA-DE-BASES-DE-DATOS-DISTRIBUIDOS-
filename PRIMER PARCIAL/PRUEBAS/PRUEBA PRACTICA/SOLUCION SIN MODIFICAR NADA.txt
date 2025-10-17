@@ -1,0 +1,327 @@
+-- =================================================================
+-- BASE DE DATOS DISTRIBUIDA - FRAGMENTACIÓN MIXTA
+-- Fragmentación Horizontal por Sede + Fragmentación Vertical
+-- Autor: Implementación para Ing. José Caiza
+-- =================================================================
+
+-- 1. CREACIÓN DE LA BASE DE DATOS
+USE master;
+GO
+
+-- Eliminar BD si existe
+IF EXISTS (SELECT name FROM sys.databases WHERE name = 'BD_DISTRIBUIDA_ALUMNOS')
+BEGIN
+    ALTER DATABASE BD_DISTRIBUIDA_ALUMNOS SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE BD_DISTRIBUIDA_ALUMNOS;
+END
+GO
+
+-- Crear nueva base de datos
+CREATE DATABASE BD_DISTRIBUIDA_ALUMNOS;
+GO
+
+USE BD_DISTRIBUIDA_ALUMNOS;
+GO
+
+-- 2. CREACIÓN DE ESQUEMAS (SIMULANDO SEDES/SITIOS)
+CREATE SCHEMA HUACHI;
+GO
+
+CREATE SCHEMA INGAHURCO;
+GO
+
+CREATE SCHEMA QUEROCHACA;
+GO
+
+-- 3. CREACIÓN DE FRAGMENTOS VERTICALES V1 (IDENTIFICACIÓN/CONTACTO)
+-- Sede HUACHI - Fragmento V1
+CREATE TABLE HUACHI.Alumnos_V1 (
+    AlumnoID INT PRIMARY KEY IDENTITY(1,1),
+    Cedula VARCHAR(10) NOT NULL UNIQUE,
+    Nombres VARCHAR(50) NOT NULL,
+    Apellidos VARCHAR(50) NOT NULL,
+    Email VARCHAR(100) NOT NULL,
+    Telefono VARCHAR(15),
+    Sede VARCHAR(20) NOT NULL DEFAULT 'HUACHI',
+    CONSTRAINT CK_HUACHI_V1_Sede CHECK (Sede = 'HUACHI')
+);
+
+-- Sede INGAHURCO - Fragmento V1
+CREATE TABLE INGAHURCO.Alumnos_V1 (
+    AlumnoID INT PRIMARY KEY IDENTITY(1,1),
+    Cedula VARCHAR(10) NOT NULL UNIQUE,
+    Nombres VARCHAR(50) NOT NULL,
+    Apellidos VARCHAR(50) NOT NULL,
+    Email VARCHAR(100) NOT NULL,
+    Telefono VARCHAR(15),
+    Sede VARCHAR(20) NOT NULL DEFAULT 'INGAHURCO',
+    CONSTRAINT CK_INGAHURCO_V1_Sede CHECK (Sede = 'INGAHURCO')
+);
+
+-- Sede QUEROCHACA - Fragmento V1
+CREATE TABLE QUEROCHACA.Alumnos_V1 (
+    AlumnoID INT PRIMARY KEY IDENTITY(1,1),
+    Cedula VARCHAR(10) NOT NULL UNIQUE,
+    Nombres VARCHAR(50) NOT NULL,
+    Apellidos VARCHAR(50) NOT NULL,
+    Email VARCHAR(100) NOT NULL,
+    Telefono VARCHAR(15),
+    Sede VARCHAR(20) NOT NULL DEFAULT 'QUEROCHACA',
+    CONSTRAINT CK_QUEROCHACA_V1_Sede CHECK (Sede = 'QUEROCHACA')
+);
+
+-- 4. CREACIÓN DE FRAGMENTOS VERTICALES V2 (ACADÉMICO)
+-- Sede HUACHI - Fragmento V2
+CREATE TABLE HUACHI.Alumnos_V2 (
+    AlumnoID INT PRIMARY KEY,
+    Carrera VARCHAR(100) NOT NULL,
+    Ciudad VARCHAR(50) NOT NULL,
+    FechaIngreso DATE NOT NULL,
+    CONSTRAINT FK_HUACHI_V2_V1 FOREIGN KEY (AlumnoID) REFERENCES HUACHI.Alumnos_V1(AlumnoID)
+);
+
+-- Sede INGAHURCO - Fragmento V2
+CREATE TABLE INGAHURCO.Alumnos_V2 (
+    AlumnoID INT PRIMARY KEY,
+    Carrera VARCHAR(100) NOT NULL,
+    Ciudad VARCHAR(50) NOT NULL,
+    FechaIngreso DATE NOT NULL,
+    CONSTRAINT FK_INGAHURCO_V2_V1 FOREIGN KEY (AlumnoID) REFERENCES INGAHURCO.Alumnos_V1(AlumnoID)
+);
+
+-- Sede QUEROCHACA - Fragmento V2
+CREATE TABLE QUEROCHACA.Alumnos_V2 (
+    AlumnoID INT PRIMARY KEY,
+    Carrera VARCHAR(100) NOT NULL,
+    Ciudad VARCHAR(50) NOT NULL,
+    FechaIngreso DATE NOT NULL,
+    CONSTRAINT FK_QUEROCHACA_V2_V1 FOREIGN KEY (AlumnoID) REFERENCES QUEROCHACA.Alumnos_V1(AlumnoID)
+);
+
+-- 5. INSERCIÓN DE DATOS DE PRUEBA
+-- Datos HUACHI
+INSERT INTO HUACHI.Alumnos_V1 (Cedula, Nombres, Apellidos, Email, Telefono, Sede)
+VALUES 
+('1804567890', 'María José', 'Pérez González', 'maria.perez@uta.edu.ec', '0987654321', 'HUACHI'),
+('1804567891', 'Carlos Alberto', 'López Ruiz', 'carlos.lopez@uta.edu.ec', '0987654322', 'HUACHI'),
+('1804567892', 'Ana Lucía', 'Martínez Silva', 'ana.martinez@uta.edu.ec', '0987654323', 'HUACHI'),
+('1804567893', 'Diego Fernando', 'Vásquez Torres', 'diego.vasquez@uta.edu.ec', '0987654324', 'HUACHI'),
+('1804567894', 'Sofía Alejandra', 'Morales Castro', 'sofia.morales@uta.edu.ec', '0987654325', 'HUACHI');
+
+INSERT INTO HUACHI.Alumnos_V2 (AlumnoID, Carrera, Ciudad, FechaIngreso)
+VALUES 
+(1, 'Ingeniería en Sistemas Computacionales e Informáticos', 'Ambato', '2023-09-01'),
+(2, 'Ingeniería Industrial en Procesos de Automatización', 'Ambato', '2023-09-01'),
+(3, 'Ingeniería en Sistemas Computacionales e Informáticos', 'Pelileo', '2024-03-01'),
+(4, 'Ingeniería Mecánica', 'Ambato', '2023-09-01'),
+(5, 'Ingeniería en Sistemas Computacionales e Informáticos', 'Tisaleo', '2024-03-01');
+
+-- Datos INGAHURCO
+INSERT INTO INGAHURCO.Alumnos_V1 (Cedula, Nombres, Apellidos, Email, Telefono, Sede)
+VALUES 
+('1805567890', 'Luis Miguel', 'Sánchez Herrera', 'luis.sanchez@uta.edu.ec', '0987654326', 'INGAHURCO'),
+('1805567891', 'Fernanda Cristina', 'Jiménez Paez', 'fernanda.jimenez@uta.edu.ec', '0987654327', 'INGAHURCO'),
+('1805567892', 'Roberto Daniel', 'Flores Mendoza', 'roberto.flores@uta.edu.ec', '0987654328', 'INGAHURCO'),
+('1805567893', 'Valentina Isabel', 'Guerrero Vega', 'valentina.guerrero@uta.edu.ec', '0987654329', 'INGAHURCO');
+
+INSERT INTO INGAHURCO.Alumnos_V2 (AlumnoID, Carrera, Ciudad, FechaIngreso)
+VALUES 
+(1, 'Ingeniería Agroindustrial', 'Ambato', '2023-09-01'),
+(2, 'Ingeniería en Alimentos', 'Patate', '2024-03-01'),
+(3, 'Ingeniería Agroindustrial', 'Cevallos', '2023-09-01'),
+(4, 'Medicina Veterinaria y Zootecnia', 'Ambato', '2024-03-01');
+
+-- Datos QUEROCHACA
+INSERT INTO QUEROCHACA.Alumnos_V1 (Cedula, Nombres, Apellidos, Email, Telefono, Sede)
+VALUES 
+('1806567890', 'Andrés Sebastián', 'Ramírez Albán', 'andres.ramirez@uta.edu.ec', '0987654330', 'QUEROCHACA'),
+('1806567891', 'Isabella Nicole', 'Torres Espín', 'isabella.torres@uta.edu.ec', '0987654331', 'QUEROCHACA'),
+('1806567892', 'Mateo Alejandro', 'Vargas Salazar', 'mateo.vargas@uta.edu.ec', '0987654332', 'QUEROCHACA'),
+('1806567893', 'Camila Stephanie', 'Ramos Borja', 'camila.ramos@uta.edu.ec', '0987654333', 'QUEROCHACA'),
+('1806567894', 'Sebastián José', 'Molina Freire', 'sebastian.molina@uta.edu.ec', '0987654334', 'QUEROCHACA'),
+('1806567895', 'Daniela Fernanda', 'Paredes Lema', 'daniela.paredes@uta.edu.ec', '0987654335', 'QUEROCHACA');
+
+INSERT INTO QUEROCHACA.Alumnos_V2 (AlumnoID, Carrera, Ciudad, FechaIngreso)
+VALUES 
+(1, 'Diseño Gráfico Publicitario', 'Ambato', '2023-09-01'),
+(2, 'Comunicación Social', 'Ambato', '2024-03-01'),
+(3, 'Diseño Gráfico Publicitario', 'Baños', '2023-09-01'),
+(4, 'Turismo y Hotelería', 'Ambato', '2024-03-01'),
+(5, 'Comunicación Social', 'Píllaro', '2023-09-01'),
+(6, 'Turismo y Hotelería', 'Patate', '2024-03-01');
+
+-- 6. CREACIÓN DE VISTAS LOCALES POR SEDE (RECONSTRUCCIÓN VERTICAL)
+-- Vista local HUACHI
+CREATE VIEW HUACHI.Vista_Alumnos_Local AS
+SELECT 
+    v1.AlumnoID,
+    v1.Cedula,
+    v1.Nombres,
+    v1.Apellidos,
+    v1.Email,
+    v1.Telefono,
+    v1.Sede,
+    v2.Carrera,
+    v2.Ciudad,
+    v2.FechaIngreso
+FROM HUACHI.Alumnos_V1 v1
+INNER JOIN HUACHI.Alumnos_V2 v2 ON v1.AlumnoID = v2.AlumnoID;
+GO
+
+-- Vista local INGAHURCO
+CREATE VIEW INGAHURCO.Vista_Alumnos_Local AS
+SELECT 
+    v1.AlumnoID,
+    v1.Cedula,
+    v1.Nombres,
+    v1.Apellidos,
+    v1.Email,
+    v1.Telefono,
+    v1.Sede,
+    v2.Carrera,
+    v2.Ciudad,
+    v2.FechaIngreso
+FROM INGAHURCO.Alumnos_V1 v1
+INNER JOIN INGAHURCO.Alumnos_V2 v2 ON v1.AlumnoID = v2.AlumnoID;
+GO
+
+-- Vista local QUEROCHACA
+CREATE VIEW QUEROCHACA.Vista_Alumnos_Local AS
+SELECT 
+    v1.AlumnoID,
+    v1.Cedula,
+    v1.Nombres,
+    v1.Apellidos,
+    v1.Email,
+    v1.Telefono,
+    v1.Sede,
+    v2.Carrera,
+    v2.Ciudad,
+    v2.FechaIngreso
+FROM QUEROCHACA.Alumnos_V1 v1
+INNER JOIN QUEROCHACA.Alumnos_V2 v2 ON v1.AlumnoID = v2.AlumnoID;
+GO
+
+-- 7. CREACIÓN DE VISTA GLOBAL (RECONSTRUCCIÓN HORIZONTAL)
+CREATE VIEW dbo.Alumnos AS
+SELECT 
+    ROW_NUMBER() OVER (ORDER BY Sede, AlumnoID) as GlobalID,
+    Cedula,
+    Nombres,
+    Apellidos,
+    Email,
+    Telefono,
+    Ciudad,
+    Sede,
+    Carrera,
+    FechaIngreso
+FROM (
+    SELECT Cedula, Nombres, Apellidos, Email, Telefono, Ciudad, Sede, Carrera, FechaIngreso
+    FROM HUACHI.Vista_Alumnos_Local
+    
+    UNION ALL
+    
+    SELECT Cedula, Nombres, Apellidos, Email, Telefono, Ciudad, Sede, Carrera, FechaIngreso
+    FROM INGAHURCO.Vista_Alumnos_Local
+    
+    UNION ALL
+    
+    SELECT Cedula, Nombres, Apellidos, Email, Telefono, Ciudad, Sede, Carrera, FechaIngreso
+    FROM QUEROCHACA.Vista_Alumnos_Local
+) AS UnionAlumnos;
+GO
+
+-- 8. CONSULTAS DE VERIFICACIÓN Y EVIDENCIAS
+-- Verificar esquemas creados
+SELECT schema_name 
+FROM information_schema.schemata 
+WHERE schema_name IN ('HUACHI', 'INGAHURCO', 'QUEROCHACA');
+
+-- Verificar tablas creadas por esquema
+SELECT 
+    TABLE_SCHEMA,
+    TABLE_NAME,
+    TABLE_TYPE
+FROM INFORMATION_SCHEMA.TABLES 
+WHERE TABLE_SCHEMA IN ('HUACHI', 'INGAHURCO', 'QUEROCHACA')
+ORDER BY TABLE_SCHEMA, TABLE_NAME;
+
+-- Contar registros por sede
+PRINT '=== CONTEO DE REGISTROS POR SEDE ===';
+SELECT 'HUACHI V1' as Fragmento, COUNT(*) as Total FROM HUACHI.Alumnos_V1
+UNION ALL
+SELECT 'HUACHI V2' as Fragmento, COUNT(*) as Total FROM HUACHI.Alumnos_V2
+UNION ALL
+SELECT 'INGAHURCO V1' as Fragmento, COUNT(*) as Total FROM INGAHURCO.Alumnos_V1
+UNION ALL
+SELECT 'INGAHURCO V2' as Fragmento, COUNT(*) as Total FROM INGAHURCO.Alumnos_V2
+UNION ALL
+SELECT 'QUEROCHACA V1' as Fragmento, COUNT(*) as Total FROM QUEROCHACA.Alumnos_V1
+UNION ALL
+SELECT 'QUEROCHACA V2' as Fragmento, COUNT(*) as Total FROM QUEROCHACA.Alumnos_V2;
+
+-- Total en vista global
+SELECT 'VISTA GLOBAL' as Origen, COUNT(*) as Total FROM dbo.Alumnos;
+
+-- 9. CONSULTAS DE DEMOSTRACIÓN DE TRANSPARENCIA
+PRINT '=== CONSULTA GLOBAL TRANSPARENTE - TODOS LOS ALUMNOS ===';
+SELECT * FROM dbo.Alumnos ORDER BY Sede, Nombres;
+
+PRINT '=== CONSULTA POR SEDE ===';
+SELECT Sede, COUNT(*) as TotalAlumnos
+FROM dbo.Alumnos 
+GROUP BY Sede;
+
+PRINT '=== CONSULTA POR CARRERA ===';
+SELECT Carrera, COUNT(*) as TotalAlumnos
+FROM dbo.Alumnos 
+GROUP BY Carrera
+ORDER BY TotalAlumnos DESC;
+
+PRINT '=== ALUMNOS DE SISTEMAS COMPUTACIONALES ===';
+SELECT Nombres, Apellidos, Sede, Ciudad
+FROM dbo.Alumnos 
+WHERE Carrera LIKE '%Sistemas Computacionales%'
+ORDER BY Sede;
+
+PRINT '=== ALUMNOS DE AMBATO POR SEDE ===';
+SELECT Sede, COUNT(*) as AlumnosAmbato
+FROM dbo.Alumnos 
+WHERE Ciudad = 'Ambato'
+GROUP BY Sede;
+
+PRINT '=== ALUMNOS INGRESADOS EN 2024 ===';
+SELECT Nombres, Apellidos, Sede, Carrera, FechaIngreso
+FROM dbo.Alumnos 
+WHERE YEAR(FechaIngreso) = 2024
+ORDER BY FechaIngreso;
+
+-- 10. CONSULTAS DE VERIFICACIÓN DE INTEGRIDAD
+PRINT '=== VERIFICACIÓN DE INTEGRIDAD REFERENCIAL ===';
+-- Verificar que todos los registros V2 tienen correspondencia en V1
+SELECT 
+    'HUACHI' as Sede,
+    (SELECT COUNT(*) FROM HUACHI.Alumnos_V1) as V1_Count,
+    (SELECT COUNT(*) FROM HUACHI.Alumnos_V2) as V2_Count,
+    CASE WHEN (SELECT COUNT(*) FROM HUACHI.Alumnos_V1) = (SELECT COUNT(*) FROM HUACHI.Alumnos_V2) 
+         THEN 'INTEGRIDAD OK' ELSE 'ERROR INTEGRIDAD' END as Estado
+UNION ALL
+SELECT 
+    'INGAHURCO' as Sede,
+    (SELECT COUNT(*) FROM INGAHURCO.Alumnos_V1) as V1_Count,
+    (SELECT COUNT(*) FROM INGAHURCO.Alumnos_V2) as V2_Count,
+    CASE WHEN (SELECT COUNT(*) FROM INGAHURCO.Alumnos_V1) = (SELECT COUNT(*) FROM INGAHURCO.Alumnos_V2) 
+         THEN 'INTEGRIDAD OK' ELSE 'ERROR INTEGRIDAD' END as Estado
+UNION ALL
+SELECT 
+    'QUEROCHACA' as Sede,
+    (SELECT COUNT(*) FROM QUEROCHACA.Alumnos_V1) as V1_Count,
+    (SELECT COUNT(*) FROM QUEROCHACA.Alumnos_V2) as V2_Count,
+    CASE WHEN (SELECT COUNT(*) FROM QUEROCHACA.Alumnos_V1) = (SELECT COUNT(*) FROM QUEROCHACA.Alumnos_V2) 
+         THEN 'INTEGRIDAD OK' ELSE 'ERROR INTEGRIDAD' END as Estado;
+
+PRINT '=== IMPLEMENTACIÓN COMPLETADA EXITOSAMENTE ===';
+PRINT 'Base de datos distribuida con fragmentación mixta implementada';
+PRINT 'Fragmentación horizontal por Sede: HUACHI, INGAHURCO, QUEROCHACA';
+PRINT 'Fragmentación vertical: V1 (Identificación/Contacto) + V2 (Académico)';
+PRINT 'Vista global dbo.Alumnos proporciona acceso transparente a todos los datos';

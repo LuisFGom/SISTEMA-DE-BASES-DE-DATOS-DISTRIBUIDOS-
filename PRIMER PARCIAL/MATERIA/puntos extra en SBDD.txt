@@ -1,0 +1,6 @@
+1 - Clase 25 de agosto- Participación final de clase
+2 - Clase 01 de septiembre - Respuesta de transparencia
+3 - Clase 01 de septiembre - Respuesta de ejemplo de Alcance (Ecuador - España B.Pichincha)
+4 - Clase 08 de septiembre - Respuesta de ¿Cómo realizar la fragmentacion? R:Consultas mas requeridas. 
+5 - Clase 15 de Septiembre - Participación : Que es Control de diseño 	R: Una arquitectura a seguir para llevar a cabo una BD.
+6 - Clase 15 de Septiembre - Participación: Ejemplo de ejercicio de fragmentacion

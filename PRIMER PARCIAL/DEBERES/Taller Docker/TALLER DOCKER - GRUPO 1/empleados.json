@@ -1,0 +1,6 @@
+{"_id": 1, "nombre": "Ana", "salario": 1200, "departamento_id": 1}
+{"_id": 2, "nombre": "Bruno", "salario": 900,  "departamento_id": 1}
+{"_id": 3, "nombre": "Carla", "salario": 1500, "departamento_id": 2}
+{"_id": 4, "nombre": "Diego", "salario": 800,  "departamento_id": 2}
+{"_id": 5, "nombre": "Elena", "salario": 700,  "departamento_id": 3}
+{"_id": 6, "nombre": "Frank", "salario": 2000, "departamento_id": 2}
